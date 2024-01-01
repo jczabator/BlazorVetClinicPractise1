@@ -1,0 +1,35 @@
+﻿@page "/vaccinationList"
+@using BlazorVetClinicPractise1.DataLayer
+@using BlazorVetClinicPractise1.UseCases.GetVaccinationsUseCase
+@inject NavigationManager NavManager
+@inject IGetVaccinations GetVaccinationsUseCase
+
+<h3>VaccinationList</h3>
+<hr />
+<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="NavigateToCreateNewVaccination">Register New Vaccination</MudButton>
+<hr />
+<MudDataGrid Items="Vaccinations">
+  <Columns>
+        <PropertyColumn Property="x => x.VaccineRegistryEntry.VaccineName" Title="Vaccine Name" />
+        <PropertyColumn Property="x => x.Veterinarian.FirstName" Title="Veterinarian First Name" />
+        <PropertyColumn Property="x => x.Veterinarian.LastName" Title="Veterinarian Last Name" />
+        <PropertyColumn Property="x => x.AnimalPassport.Name" Title="Animal Name" />
+        <PropertyColumn Property="x => x.VaccineRegistryEntry.VaccineName" Title="Vaccine Name" />
+        <PropertyColumn Property="x => x.VaccinationDate" Title="Vaccination Date" />
+  </Columns>
+</MudDataGrid>
+
+@code {
+    private IEnumerable<Vaccination> Vaccinations = new List<Vaccination>();
+
+    async Task NavigateToCreateNewVaccination()
+    {
+        NavManager.NavigateTo("/createNewVaccination");
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Vaccinations = await GetVaccinationsUseCase.GetVaccinations();
+    }
+
+}
